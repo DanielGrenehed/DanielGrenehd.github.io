@@ -1,7 +1,184 @@
 <!DOCTYPE html>
 <html>
-<body>
-<h1>Hello, I'm Daniel Grenehed</h1>
-<p>(Hosted with GitHub Pages)</p>
-</body>
+    <header>
+        <title>Daniel Grenehed</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+            body {
+                font-family: 'Roboto', sans-serif;
+                margin: 0;
+                padding-left: 4rem;
+                padding-right: 4rem;
+            }
+            .l {
+                clear:right;
+                float:left;
+                text-align: left;
+                /*transform: rotate3d(1, 1, 1,45deg);*/
+            }
+            .r {
+                clear: left;
+                float: right;
+                text-align: right;
+                padding: 20px;
+                /*transform: rotate(-5deg);*/
+            }
+            .l_block {
+                display: block;
+                border-left: 3px solid rgba(0,0,0, 0.5);
+                padding-left: 16px;
+                max-width: 500px;
+            }
+            .r_block {
+                display: block;
+                border-right: 3px solid rgba(0,0,0, 0.5);
+                padding-right: 16px;
+                max-width: 500px;
+            }
+            .alt {
+                color: rgba(0,0,0, 0.5);
+            }
+
+            .ib {
+                display: inline-block;
+            }
+
+            .mr {
+                margin-right: 16px;
+            }
+
+            .ml {
+                margin-left: 16px;
+            }
+            
+            .group {
+                margin: 40px;
+            }
+            h3 {
+                margin-bottom: 5px;
+                font-weight: bolder;
+            }
+            h4 {
+                margin-top: 5px;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+            footer {
+                position: absolute;
+                bottom: 0px;
+                right: 16px;
+            }
+            canvas {
+                position: absolute;
+                z-index: -1;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </header>
+    <body>
+        <h1>Daniel Grenehed</h1>
+        <div class="education r">
+            <h2>Utbildning</h2>
+            <div class="r_block">
+                <div class="group">
+                    <h3><div class="ib alt mr">2021 - 2023</div>IoT-Utvecklare</h3>
+                    <h4>Nackademin<div class="ib alt ml">Stockholm</div></h4>
+                    <p>This is just som sample text explaining why you should care about me going through this education, why i think it is relevant, and why i would never recommend it to anybody else</p>
+                </div>
+                <div class="group">
+                    <h3><div class="ib alt mr">2016 - 2017</div>T4 Gymnasieingengör</h3>
+                    <h4>NTI Gymnasiet<div class="ib alt ml">Umeå</div></h4>
+                    <p>This was a fun year of empty promises</p>
+                </div>
+                <div class="group">
+                    <h3><div class="ib alt mr">2013 - 2016</div>TE Informations- och medieteknik</h3>
+                    <h4>NTI Gymnasiet<div class="ib alt ml">Umeå</div></h4>
+                    <p>Hey, i learned quite a bit about programming here, and made a(horrible but working) game engine in *pure* java</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="education l">
+            <h2>Utbildning</h2>
+            <div class="l_block">
+                <div class="group">
+                    <h3><div class="ib alt mr">2021 - 2023</div>IoT-Utvecklare</h3>
+                    <h4>Nackademin<div class="ib alt ml">Stockholm</div></h4>
+                    <p>This is just som sample text explaining why you should care about me going through this education, why i think it is relevant, and why i would never recommend it to anybody else</p>
+                </div>
+                <div class="group">
+                    <h3><div class="ib alt mr">2016 - 2017</div>T4 Gymnasieingengör</h3>
+                    <h4>NTI Gymnasiet<div class="ib alt ml">Umeå</div></h4>
+                    <p>This was a fun year of empty promises</p>
+                </div>
+                <div class="group">
+                    <h3><div class="ib alt mr">2013 - 2016</div>TE Informations- och medieteknik</h3>
+                    <h4>NTI Gymnasiet<div class="ib alt ml">Umeå</div></h4>
+                    <p>Hey, i learned quite a bit about programming here, and made a(horrible but working) game engine in *pure* java</p>
+                </div>
+            </div>
+        </div>
+
+        <canvas width="30" height="30"></canvas>
+            <footer>
+            <p style="color:rgba(0,0,0, 0.2);">(Hosted with GitHub Pages)</p>
+        </footer>
+    </body>
 </html>
+<script>
+    const canvas = document.getElementsByTagName("canvas")[0];
+    const ctx = canvas.getContext("2d");
+    
+    function setCanvasSize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        console.log("Canvas size: ", canvas.width, canvas.height);
+    }
+    window.addEventListener('resize', setCanvasSize, false);
+
+    setCanvasSize();
+    function lerp(f, s, t) {
+        return (1 - t) * f + t * s;
+    }
+
+    let p1 = {x: 0, y: 0};
+    let p2 = {x: canvas.width/2, y: canvas.height/2};
+
+    function newDestination() {
+        p1.x = p2.x;
+        p1.y = p2.y;
+        p2.x = Math.random()*canvas.width;
+        p2.y = Math.random()*canvas.height;                
+    }
+
+    let steps = 100.0;
+    let step_size = 0.1;
+    let step = 0;
+
+    function draw() {
+        let prog = step/steps;
+        ctx.fillText("Hello world!", lerp(p1.x, p2.x, prog), lerp(p1.y, p2.y, prog));
+    }
+
+    function update() {
+        setTimeout(update, 1);
+        ctx.fillStyle = "rgba(0, 0, 0, 0.01)";
+        ctx.font = "168px Roboto";
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        // draw stuff
+        draw();
+        if (step >= steps) {
+            newDestination();
+            step = 0;
+        } else {
+            step += step_size;
+        }
+        //console.log("Hello ", step);;
+    }
+    
+    update();
+</script>
