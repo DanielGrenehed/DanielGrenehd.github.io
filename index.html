@@ -139,29 +139,62 @@
         console.log("Canvas size: ", canvas.width, canvas.height);
     }
     window.addEventListener('resize', setCanvasSize, false);
-
     setCanvasSize();
-    function lerp(f, s, t) {
-        return (1 - t) * f + t * s;
+    class Point {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        mult(t) {
+            return new Point(this.x*t, this.y*t);
+        }
+
+        add(p) {
+            return new Point(this.x+p.x, this.y+p.y);
+        }
+
+        copy() {
+            return new Point(this.x, this.y);
+        }
+    }
+    function randomOnScreenPoint() {
+        return new Point(Math.random()*canvas.width, Math.random()*canvas.height);
     }
 
-    let p1 = {x: 0, y: 0};
-    let p2 = {x: canvas.width/2, y: canvas.height/2};
+    function lerp(p_1, p_2, t) {
+        return p_1.mult(1-t).add(p_2.mult(t));
+        //return (1 - t) * p1 + t * p2;
+    }
+
+    function spline(p_1, p_2, p_3, t) {
+        return lerp(lerp(p_1, p_2, t), lerp(p_2, p_3, t), t);
+    }
+
+    function easeInOut(x) {
+        return -(Math.cos(Math.PI * x) - 1)/2;
+    }
+
+    let p1 = new Point(0, 0)
+    let p2 = randomOnScreenPoint();
+    let p3 = randomOnScreenPoint();
 
     function newDestination() {
-        p1.x = p2.x;
-        p1.y = p2.y;
-        p2.x = Math.random()*canvas.width;
-        p2.y = Math.random()*canvas.height;                
+        p1 = p3.copy();
+        p2 = randomOnScreenPoint();
+        p3 = randomOnScreenPoint();
     }
 
     let steps = 100.0;
-    let step_size = 0.1;
+    let step_size = 0.3;
     let step = 0;
 
+    let text = "Hello world!";
     function draw() {
-        let prog = step/steps;
-        ctx.fillText("Hello world!", lerp(p1.x, p2.x, prog), lerp(p1.y, p2.y, prog));
+        let p = spline(p1, p2, p3, easeInOut(step/steps));
+        let x_off = ctx.measureText(text).width/2;
+        let y_off = 168/2; 
+        ctx.fillText(text, p.x-x_off, p.y-y_off);
     }
 
     function update() {
