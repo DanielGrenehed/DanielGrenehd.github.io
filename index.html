@@ -15,14 +15,12 @@
                 clear:right;
                 float:left;
                 text-align: left;
-                /*transform: rotate3d(1, 1, 1,45deg);*/
             }
             .r {
                 clear: left;
                 float: right;
                 text-align: right;
                 padding: 20px;
-                /*transform: rotate(-5deg);*/
             }
             .l_block {
                 display: block;
@@ -92,7 +90,7 @@
                 <div class="group">
                     <h3><div class="ib alt mr">2016 - 2017</div>T4 Gymnasieingengör</h3>
                     <h4>NTI Gymnasiet<div class="ib alt ml">Umeå</div></h4>
-                    <p>This was a fun year of empty promises</p>
+                    <p>This was a fun year of empty promises and quite a bit of programming</p>
                 </div>
                 <div class="group">
                     <h3><div class="ib alt mr">2013 - 2016</div>TE Informations- och medieteknik</h3>
@@ -140,40 +138,24 @@
     }
     window.addEventListener('resize', setCanvasSize, false);
     setCanvasSize();
+    
     class Point {
         constructor(x, y) {
             this.x = x;
             this.y = y;
         }
-
-        mult(t) {
-            return new Point(this.x*t, this.y*t);
-        }
-
-        add(p) {
-            return new Point(this.x+p.x, this.y+p.y);
-        }
-
-        copy() {
-            return new Point(this.x, this.y);
-        }
+        mult(t) { return new Point(this.x*t, this.y*t); }
+        add(p) { return new Point(this.x+p.x, this.y+p.y); }
+        copy() { return new Point(this.x, this.y); }
     }
+
     function randomOnScreenPoint() {
         return new Point(Math.random()*canvas.width, Math.random()*canvas.height);
     }
 
-    function lerp(p_1, p_2, t) {
-        return p_1.mult(1-t).add(p_2.mult(t));
-        //return (1 - t) * p1 + t * p2;
-    }
-
-    function spline(p_1, p_2, p_3, t) {
-        return lerp(lerp(p_1, p_2, t), lerp(p_2, p_3, t), t);
-    }
-
-    function easeInOut(x) {
-        return -(Math.cos(Math.PI * x) - 1)/2;
-    }
+    function lerp(p_1, p_2, t) { return p_1.mult(1-t).add(p_2.mult(t)); }
+    function spline(p_1, p_2, p_3, t) { return lerp(lerp(p_1, p_2, t), lerp(p_2, p_3, t), t); }
+    function easeInOut(x) { return -(Math.cos(Math.PI * x) - 1)/2; }
 
     let p1 = new Point(0, 0)
     let p2 = randomOnScreenPoint();
@@ -210,7 +192,6 @@
         } else {
             step += step_size;
         }
-        //console.log("Hello ", step);;
     }
     
     update();
